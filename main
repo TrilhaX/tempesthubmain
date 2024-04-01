@@ -1,3 +1,7 @@
 if PlaceId == 16510724413 then 
   loadstring(game:HttpGet("https://raw.githubusercontent.com/TrilhaX/petcatcher/main/main"))()
 end
+
+if PlaceId == 8246874626 then
+  loadstring(game:HttpGet("https://raw.githubusercontent.com/TrilhaX/dragonsoul/main/main"))()
+end
