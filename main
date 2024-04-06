@@ -1,7 +1,37 @@
-if PlaceId == 16510724413 then 
-  loadstring(game:HttpGet("https://raw.githubusercontent.com/TrilhaX/petcatcher/main/main"))()
+function TempestHubWl()
+    local key = "by0PpFoiV5BQ"
+    local hwid = game:GetService("RbxAnalyticsService"):GetClientId()
+
+    if key == "by0PpFoiV5BQ" and hwid then
+        print("Whitelisted")
+
+        local function makeHttpRequest(url)
+            local success, response = pcall(function()
+                return game:HttpGet(url)
+            end)
+
+            if success then
+                local scriptFunction = loadstring(response)
+                if scriptFunction then
+                    scriptFunction()
+                end
+            end
+        end
+
+        local urls = {
+            "https://raw.githubusercontent.com/TrilhaX/dragonsoul/main/main",
+        }
+
+        for _, url in ipairs(urls) do
+            makeHttpRequest(url)
+        end
+    else
+        print("Not Whitelisted")
+    end
 end
 
-if PlaceId == 8246874626 then
-  loadstring(game:HttpGet("https://raw.githubusercontent.com/TrilhaX/dragonsoul/main/main"))()
+for i, v in pairs(getconnections(game.Players.LocalPlayer.Idled)) do
+    v:Disable()
 end
+
+TempestHubWl()
