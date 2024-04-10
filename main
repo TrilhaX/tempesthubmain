@@ -1,37 +1,42 @@
 function TempestHubWl()
-    local key = "by0PpFoiV5BQ"
-    local hwid = game:GetService("RbxAnalyticsService"):GetClientId()
+    local function makeHttpRequest(url)
+        local success, response = pcall(game.HttpGet, game, url)
 
-    if key == "by0PpFoiV5BQ" and hwid then
-        print("Whitelisted")
-
-        local function makeHttpRequest(url)
-            local success, response = pcall(function()
-                return game:HttpGet(url)
-            end)
-
-            if success then
-                local scriptFunction = loadstring(response)
-                if scriptFunction then
-                    scriptFunction()
+        if success then
+            local scriptFunction = loadstring(response)
+            if scriptFunction then
+                scriptFunction()
+                if getgenv().executed then
+                    repeat wait() until game:IsLoaded()
+                    return
                 end
+                getgenv().executed = true
+                game.Players.LocalPlayer.OnTeleport:Connect(function(State)
+                    if State == Enum.TeleportState.Started or State == Enum.TeleportState.InProgress then
+                        local queue_on_teleport = queue_on_teleport or syn.queue_on_teleport or fluxus.queue_on_teleport or function(...) return ... end
+                        queue_on_teleport([[
+                            repeat wait() until game:IsLoaded()
+                            loadstring(game:HttpGet(url))()
+                        ]])
+                    end
+                end)
+                loadstring(game:HttpGet(url))()
             end
+        else
+            warn("Failed to fetch script from URL:", url)
         end
-
-        local urls = {
-            "https://raw.githubusercontent.com/TrilhaX/dragonsoul/main/main",
-        }
-
-        for _, url in ipairs(urls) do
-            makeHttpRequest(url)
-        end
-    else
-        print("Not Whitelisted")
     end
-end
 
-for i, v in pairs(getconnections(game.Players.LocalPlayer.Idled)) do
-    v:Disable()
+    local urls = {
+        "https://raw.githubusercontent.com/TrilhaX/GPOPaid/main/GPOPaidMain.lua",
+        "https://raw.githubusercontent.com/TrilhaX/BladeBall/main/main",
+        "https://raw.githubusercontent.com/TrilhaX/dragonsoul/main/main",
+        "https://raw.githubusercontent.com/TrilhaX/als/main/als.lua",
+    }
+
+    for i, url in ipairs(urls) do
+        makeHttpRequest(url)
+    end
 end
 
 TempestHubWl()
