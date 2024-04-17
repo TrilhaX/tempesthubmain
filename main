@@ -1,42 +1,45 @@
-function TempestHubWl()
-    local function makeHttpRequest(url)
-        local success, response = pcall(game.HttpGet, game, url)
+local function makeHttpRequest(url)
+    local success, response = pcall(game.HttpGet, game, url)
 
-        if success then
-            local scriptFunction = loadstring(response)
-            if scriptFunction then
-                scriptFunction()
-                if getgenv().executed then
-                    repeat wait() until game:IsLoaded()
-                    return
-                end
-                getgenv().executed = true
-                game.Players.LocalPlayer.OnTeleport:Connect(function(State)
-                    if State == Enum.TeleportState.Started or State == Enum.TeleportState.InProgress then
-                        local queue_on_teleport = queue_on_teleport or syn.queue_on_teleport or fluxus.queue_on_teleport or function(...) return ... end
-                        queue_on_teleport([[
-                            repeat wait() until game:IsLoaded()
-                            loadstring(game:HttpGet(url))()
-                        ]])
-                    end
-                end)
-                loadstring(game:HttpGet(url))()
-            end
-        else
-            warn("Failed to fetch script from URL:", url)
-        end
+    if success then
+        loadstring(response)()
+    else
+        warn("Failed to fetch script from URL:", url)
+    end
+end
+
+function TempestHubWl()
+    if getgenv().executed then
+        return "Script já executado após teleport."
     end
 
-    local urls = {
-        "https://raw.githubusercontent.com/TrilhaX/GPOPaid/main/GPOPaidMain.lua",
-        "https://raw.githubusercontent.com/TrilhaX/BladeBall/main/main",
-        "https://raw.githubusercontent.com/TrilhaX/dragonsoul/main/main",
-        "https://raw.githubusercontent.com/TrilhaX/als/main/als.lua",
-        "https://raw.githubusercontent.com/TrilhaX/roghoul/main/main",
+    getgenv().executed = true
+
+    local id = {
+        AlsId = 12886143095,
+        BladeBallId = 13772394625,
+        GPOId = 1730877806,
+        DBZGId = 8246874626,
+        RoGhoulId = 914010731
     }
 
-    for i, url in ipairs(urls) do
-        makeHttpRequest(url)
+    local scriptLoaded = false
+
+    if game.PlaceId == id.AlsId then
+        makeHttpRequest("https://raw.githubusercontent.com/TrilhaX/als/main/als.lua")
+        scriptLoaded = true
+    elseif game.PlaceId == id.BladeBallId then
+        makeHttpRequest("https://raw.githubusercontent.com/TrilhaX/BladeBall/main/main")
+        scriptLoaded = true
+    elseif game.PlaceId == id.GPOId then
+        makeHttpRequest("https://raw.githubusercontent.com/TrilhaX/GPOPaid/main/GPOPaidMain.lua")
+        scriptLoaded = true
+    elseif game.PlaceId == id.DBZGId then
+        makeHttpRequest("https://raw.githubusercontent.com/TrilhaX/dragonsoul/main/main")
+        scriptLoaded = true
+    elseif game.PlaceId == id.RoGhoulId then
+        makeHttpRequest("https://raw.githubusercontent.com/TrilhaX/roghoul/main/main")
+        scriptLoaded = true
     end
 end
 
