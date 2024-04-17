@@ -1,46 +1,46 @@
-local function makeHttpRequest(url)
-    local success, response = pcall(game.HttpGet, game, url)
+local Id = game.PlaceId
 
-    if success then
-        loadstring(response)()
-    else
-        warn("Failed to fetch script from URL:", url)
+local Games = {
+    ["GPOPaid"] = {
+        PlaceId = 3183403065,
+        Github = "https://raw.githubusercontent.com/TrilhaX/GPOPaid/main/GPOPaidMain.lua",  
+    },
+    ["roghoul"] = {
+        PlaceId = 914010731,
+        Github = "https://raw.githubusercontent.com/TrilhaX/roghoul/main/main",  
+    },
+    ["BladeBall"] = {
+        PlaceId = 4777817887,
+        Github = "https://raw.githubusercontent.com/TrilhaX/BladeBall/main/main.lua",  
+    },
+    ["dragonsoul"] = {
+        PlaceId = 5300677688,
+        Github = "https://raw.githubusercontent.com/TrilhaX/dragonsoul/main/main.lua",  
+    },
+    ["ALS"] = {
+        PlaceId = 4509896324,
+        Github = "https://raw.githubusercontent.com/TrilhaX/als/main/als.lua",  
+    },
+}
+
+function LoadScript(id)
+    for gameName, gameInfo in pairs(Games) do
+        if id == gameInfo.PlaceId then
+            local response = syn.request({
+                Url = gameInfo.Github,
+                Method = "GET"
+            })
+            
+            if response.Success then
+                loadstring(response.Body)()
+                print("Script executado para", gameName)
+            else
+                warn("Falha ao carregar o script para", gameName, "- Código de status:", response.StatusCode)
+            end
+            return
+        end
     end
+    warn("Jogo não encontrado ou PlaceId inválido.")
 end
 
-function TempestHubWl()
-    if getgenv().executed then
-        return "Script já executado após teleport."
-    end
-
-    getgenv().executed = true
-
-    local id = {
-        AlsId = 12886143095,
-        BladeBallId = 13772394625,
-        GPOId = 1730877806,
-        DBZGId = 8246874626,
-        RoGhoulId = 914010731
-    }
-
-    local scriptLoaded = false
-
-    if game.PlaceId == id.AlsId then
-        makeHttpRequest("https://raw.githubusercontent.com/TrilhaX/als/main/als.lua")
-        scriptLoaded = true
-    elseif game.PlaceId == id.BladeBallId then
-        makeHttpRequest("https://raw.githubusercontent.com/TrilhaX/BladeBall/main/main")
-        scriptLoaded = true
-    elseif game.PlaceId == id.GPOId then
-        makeHttpRequest("https://raw.githubusercontent.com/TrilhaX/GPOPaid/main/GPOPaidMain.lua")
-        scriptLoaded = true
-    elseif game.PlaceId == id.DBZGId then
-        makeHttpRequest("https://raw.githubusercontent.com/TrilhaX/dragonsoul/main/main")
-        scriptLoaded = true
-    elseif game.PlaceId == id.RoGhoulId then
-        makeHttpRequest("https://raw.githubusercontent.com/TrilhaX/roghoul/main/main")
-        scriptLoaded = true
-    end
-end
-
-TempestHubWl()
+LoadScript(Id)
