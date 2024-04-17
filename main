@@ -32,6 +32,7 @@ function TempestHubWl()
         "https://raw.githubusercontent.com/TrilhaX/BladeBall/main/main",
         "https://raw.githubusercontent.com/TrilhaX/dragonsoul/main/main",
         "https://raw.githubusercontent.com/TrilhaX/als/main/als.lua",
+        "https://raw.githubusercontent.com/TrilhaX/roghoul/main/main",
     }
 
     for i, url in ipairs(urls) do
