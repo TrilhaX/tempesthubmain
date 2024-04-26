@@ -18,7 +18,7 @@ local Games = {
         Github = "https://raw.githubusercontent.com/TrilhaX/dragonsoul/main/main.lua",  
     },
     ["ALS"] = {
-        PlaceId = 4509896324,
+        PlaceId = 12886143095,
         Github = "https://raw.githubusercontent.com/TrilhaX/als/main/als.lua",  
     },
     ["animeswordX"] = {
