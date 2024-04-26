@@ -21,6 +21,10 @@ local Games = {
         PlaceId = 4509896324,
         Github = "https://raw.githubusercontent.com/TrilhaX/als/main/als.lua",  
     },
+    ["animeswordx"] = {
+        PlaceId = 16914149804,
+        Github = "https://raw.githubusercontent.com/TrilhaX/animeswordX/main/Main",  
+    },
 }
 
 function LoadScript(id)
