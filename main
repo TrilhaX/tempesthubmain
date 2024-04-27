@@ -26,7 +26,7 @@ local Games = {
         Github = "https://raw.githubusercontent.com/TrilhaX/animeswordX/main/Main",  
     },
     ["animeswitch"] = {
-        PlaceId = 9704927237,
+        PlaceId = 9704927237 or 12940506339,
         Github = "https://raw.githubusercontent.com/TrilhaX/animeswitch/main/Main",  
     },
 }
