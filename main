@@ -2,53 +2,61 @@ local Id = game.PlaceId
 
 local Games = {
     ["GPOPaid"] = {
-        PlaceId = 3183403065,
+        PlaceIds = {3183403065},
         Github = "https://raw.githubusercontent.com/TrilhaX/GPOPaid/main/GPOPaidMain.lua",  
     },
     ["roghoul"] = {
-        PlaceId = 914010731,
+        PlaceIds = {914010731},
         Github = "https://raw.githubusercontent.com/TrilhaX/roghoul/main/main",  
     },
     ["BladeBall"] = {
-        PlaceId = 4777817887,
+        PlaceIds = {4777817887},
         Github = "https://raw.githubusercontent.com/TrilhaX/BladeBall/main/main.lua",  
     },
     ["dragonsoul"] = {
-        PlaceId = 5300677688,
+        PlaceIds = {5300677688},
         Github = "https://raw.githubusercontent.com/TrilhaX/dragonsoul/main/main.lua",  
     },
     ["ALS"] = {
-        PlaceId = 12886143095,
+        PlaceIds = {12886143095},
         Github = "https://raw.githubusercontent.com/TrilhaX/als/main/als.lua",  
     },
     ["animeswordX"] = {
-        PlaceId = 16914149804,
+        PlaceIds = {16914149804},
         Github = "https://raw.githubusercontent.com/TrilhaX/animeswordX/main/Main",  
     },
     ["animeswitch"] = {
-        PlaceId = 9704927237 or 12940506339,
+        PlaceIds = {9704927237, 12940506339},
         Github = "https://raw.githubusercontent.com/TrilhaX/animeswitch/main/Main",  
     },
 }
 
 function LoadScript(id)
     for gameName, gameInfo in pairs(Games) do
-        if id == gameInfo.PlaceId then
-            local response = syn.request({
-                Url = gameInfo.Github,
-                Method = "GET"
-            })
-            
-            if response.Success then
-                loadstring(response.Body)()
-                print("Script executado para", gameName)
-            else
-                warn("Falha ao carregar o script para", gameName, "- Código de status:", response.StatusCode)
+        if gameInfo.PlaceIds then
+            for _, placeId in ipairs(gameInfo.PlaceIds) do
+                if id == placeId then
+                    LoadGameScript(gameName, gameInfo.Github)
+                    return
+                end
             end
-            return
         end
     end
     warn("Jogo não encontrado ou PlaceId inválido.")
+end
+
+function LoadGameScript(gameName, githubUrl)
+    local response = syn.request({
+        Url = githubUrl,
+        Method = "GET"
+    })
+    
+    if response.Success then
+        loadstring(response.Body)()
+        print("Script executado para", gameName)
+    else
+        warn("Falha ao carregar o script para", gameName, "- Código de status:", response.StatusCode)
+    end
 end
 
 LoadScript(Id)
