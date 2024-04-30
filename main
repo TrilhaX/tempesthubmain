@@ -29,6 +29,10 @@ local Games = {
         PlaceIds = {9704927237, 12940506339},
         Github = "https://raw.githubusercontent.com/TrilhaX/animeswitch/main/Main",  
     },
+    ["PM"] = {
+        PlaceIds = {9447079542, 9474703390},
+        Github = "https://raw.githubusercontent.com/TrilhaX/pm/main/Main",  
+    },
 }
 
 function LoadScript(id)
