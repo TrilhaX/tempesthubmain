@@ -54,16 +54,30 @@ function LoadScript(id)
 end
 
 function LoadGameScript(gameName, githubUrl)
-    local response = syn.request({
-        Url = githubUrl,
-        Method = "GET"
-    })
+    local http_request = http_request or request or (syn and syn.request) or (http and http.request)
     
-    if response.Success then
-        loadstring(response.Body)()
-        print("Script executado para", gameName)
+    if not http_request then
+        warn("Nenhuma função de requisição HTTP suportada encontrada. Certifique-se de que você está usando um executor que suporta requisições HTTP.")
+        return
+    end
+
+    local success, response = pcall(function()
+        return http_request({
+            Url = githubUrl,
+            Method = "GET"
+        })
+    end)
+    
+    if success then
+        if response.StatusCode == 200 then
+            loadstring(response.Body)()
+            print("Script executado para", gameName)
+        else
+            warn("Falha ao carregar o script para", gameName, "- Código de status:", response.StatusCode)
+            print("Detalhes do erro:", response.StatusMessage or "N/A", response.Body or "N/A")
+        end
     else
-        warn("Falha ao carregar o script para", gameName, "- Código de status:", response.StatusCode)
+        warn("Erro ao fazer a solicitação HTTP para", gameName, "- Detalhes do erro:", response)
     end
 end
 
