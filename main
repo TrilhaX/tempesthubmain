@@ -33,6 +33,10 @@ local Games = {
         PlaceIds = {9447079542, 9474703390, 10202329527},
         Github = "https://raw.githubusercontent.com/TrilhaX/pm/main/Main",  
     },
+    ["UTD"] = {
+        PlaceIds = {5902977746},
+        Github = "https://raw.githubusercontent.com/TrilhaX/utd/main/main",  
+    },
 }
 
 function LoadScript(id)
